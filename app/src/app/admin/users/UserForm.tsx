@@ -18,21 +18,19 @@ export default function UserForm({onSubmitted, onCancelled}: UserFormProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => { 
+  const handleSubmit = async (e: FormEvent) => { 
     e.preventDefault();
-    /*fetch('/api/admin/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    }).then(res => {
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
       if (!res.ok) throw new Error(`Error creating user: ${res.status} ${res.statusText}`);
       onSubmitted();
-    }).catch(err => {
+    } catch(err) {
       console.error('Error:', err);
-    });*/
-    onSubmitted();
-
-    console.log(formData);
+    }
   };
 
   return (
