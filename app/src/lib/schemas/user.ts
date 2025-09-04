@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 export const UserSchema = z.object({
+  id: z
+    .number(),
   name: z
     .string()
     .min(3)
@@ -14,3 +16,7 @@ export const UserSchema = z.object({
   isAdmin: z
     .boolean()
 });
+
+export const CreateUserSchema = UserSchema.omit({ id: true });
+
+export const EditUserSchema = UserSchema.omit({ name: true });
