@@ -27,7 +27,8 @@ export async function createUser(data: CreateUser) {
 }
 
 export async function updateUser(data: EditUser) {
-  return prisma.user.update({ where: { id: data.id }, data });
+  const user = prisma.user.update({ where: { id: data.id }, data });
+  return user;
 }
 
 export async function deleteUser(id: number) {
