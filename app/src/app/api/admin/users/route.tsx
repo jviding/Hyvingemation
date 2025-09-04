@@ -1,70 +1,30 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { CreateUserSchema, EditUserSchema } from '@/lib/schemas/user';
-import { createUser, updateUser } from '@/lib/queries/user';
-import { AppError } from '@/lib/app_error';
+import { CreateUserSchema, UpdateUserSchema, DeleteUserSchema } from '@/lib/schemas/user';
+import { createUser, updateUser, deleteUser, 
+    CreateUser, UpdateUser, DeleteUser } from '@/lib/queries/user';
+import { handleRequest } from '@/lib/api/middleware';
 
 
-export async function GET() {
-  try {
+export const GET = handleRequest(async (request: Request) => {
     const users = await prisma.user.findMany();
     return NextResponse.json(users);
-  } catch (err: unknown) {
-    return AppError.toNextResponse(err);
-  }
-}
+})
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const result = CreateUserSchema.safeParse(body);
+export const POST = handleRequest(CreateUserSchema, async (request: Request, data: CreateUser) => {
+  const user = await createUser(data);
+  console.log('Created user:', user);
+  return NextResponse.json({}, { status: 201 });
+})
 
-    if (!result.success) {
-      console.error('Validation error:', result.error.issues);
-      throw new AppError('Invalid user data', 400);
-    }
-  
-    const user = await createUser(result.data);
-    console.log('Created user:', user);
-    return NextResponse.json({}, { status: 201 });
-
-  } catch (err: unknown) {
-    return AppError.toNextResponse(err);
-  }
-}
-
-export async function PUT(request: Request) {
-  try {
-    const body = await request.json();
-    const result = EditUserSchema.safeParse(body);
-
-    if (!result.success) {
-      console.error('Validation error:', result.error.issues);
-      throw new AppError('Invalid user data', 400);
-    }
-
-    const user = await updateUser(result.data);
+export const PUT = handleRequest(UpdateUserSchema, async (request: Request, data: UpdateUser) => {
+    const user = await updateUser(data);
     console.log('Modified user:', user);
-    return NextResponse.json({}, { status: 200 });
-  } catch (err: unknown) {
-    return AppError.toNextResponse(err);
-  }
-}
+    return NextResponse.json({}, { status: 204 });
+})
 
-export async function DELETE(request: Request) {
-  try {
-    const body = await request.json();
-    const result = EditUserSchema.safeParse(body);
-
-    if (!result.success) {
-      console.error('Validation error:', result.error.issues);
-      throw new AppError('Invalid user data', 400);
-    }
-
-    const user = await updateUser(result.data);
-    console.log('Modified user:', user);
-    return NextResponse.json({}, { status: 200 });
-  } catch (err: unknown) {
-    return AppError.toNextResponse(err);
-  }
-}
+export const DELETE = handleRequest(DeleteUserSchema, async (request: Request, data: DeleteUser) => {
+    const user = await deleteUser(data);
+    console.log('Deleted user:', user);
+    return NextResponse.json({}, { status: 204 });
+})
