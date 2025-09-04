@@ -2,18 +2,26 @@ import React from "react";
 
 export type TextFieldProps = {
   name: string;
-  label: string;
+  label?: string;
   value: string;
   required?: boolean;
   onChange: (name: string, value: string) => void;
 };
 
-export function TextField({ name, label, value, required, onChange }: TextFieldProps) {
+export function TextField({ 
+  name, 
+  label,
+  value, 
+  required = false, 
+  onChange 
+}: TextFieldProps) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
+      {!!label &&
+        <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      }
       <input
         id={name}
         name={name}
