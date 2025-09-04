@@ -19,6 +19,6 @@ export const UserSchema = z.object({
 
 export const CreateUserSchema = UserSchema.omit({ id: true });
 
-export const EditUserSchema = UserSchema.omit({ name: true });
+export const UpdateUserSchema = UserSchema.omit({ name: true });
 
 export const DeleteUserSchema = UserSchema.pick({ id: true });
