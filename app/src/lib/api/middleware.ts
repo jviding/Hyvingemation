@@ -32,7 +32,7 @@ export function handleRequest(
 
 export function handleRequest<T extends ZodObject<ZodRawShape>>(
   schema: T,
-  handler: (req: Request, data?: z.infer<T>) => Promise<NextResponse>
+  handler: (req: Request, data: z.infer<T>) => Promise<NextResponse>
 ): (req: Request) => Promise<NextResponse>;
 
 export function handleRequest(
