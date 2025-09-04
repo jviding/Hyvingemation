@@ -9,7 +9,11 @@ type FormProps = {
   onCancel: () => void;
 };
 
-export function Form({ children, onSubmit, onCancel }: FormProps) {
+export function Form({ 
+  children, 
+  onSubmit, 
+  onCancel 
+}: FormProps) {
   return (
     <div className="max-w-xl mx-auto">
       <form 
