@@ -10,7 +10,7 @@ export type TextFieldProps = {
 
 export function TextField({ 
   name, 
-  label,
+  label = "",
   value, 
   required = false, 
   onChange 
