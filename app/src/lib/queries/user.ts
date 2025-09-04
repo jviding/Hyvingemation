@@ -1,10 +1,11 @@
 import { prisma } from '@/lib/prisma';
-import { CreateUserSchema, EditUserSchema } from '@/lib/schemas/user';
+import { CreateUserSchema, DeleteUserSchema, EditUserSchema } from '@/lib/schemas/user';
 import { z } from 'zod';
 import { AppError } from '@/lib/app_error';
 
 export type CreateUser = z.infer<typeof CreateUserSchema>;
 export type EditUser = z.infer<typeof EditUserSchema>;
+export type DeleteUser = z.infer<typeof DeleteUserSchema>;
 
 export async function getAllUsers() {
   return prisma.user.findMany();
@@ -31,6 +32,6 @@ export async function updateUser(data: EditUser) {
   return user;
 }
 
-export async function deleteUser(id: number) {
+export async function deleteUser({ id }: DeleteUser) {
   return prisma.user.delete({ where: { id } });
 }
