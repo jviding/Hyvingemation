@@ -1,25 +1,21 @@
 import { prisma } from '@/lib/prisma';
-import { CreateUserSchema, DeleteUserSchema, UpdateUserSchema } from '@/lib/schemas/user';
-import { z } from 'zod';
+import { CreateUserDataObj, DeleteUserDataObj, UpdateUserDataObj } from '@/lib/schemas/user';
 import { AppError } from '@/lib/app_error';
 
-export type CreateUser = z.infer<typeof CreateUserSchema>;
-export type UpdateUser = z.infer<typeof UpdateUserSchema>;
-export type DeleteUser = z.infer<typeof DeleteUserSchema>;
 
 export async function getAllUsers() {
-  return prisma.user.findMany();
+  return await prisma.user.findMany();
 }
 
 export async function getUserById(id: number) {
-  return prisma.user.findUnique({ where: { id } });
+  return await prisma.user.findUnique({ where: { id } });
 }
 
 export async function getUserByName(name: string) {
-  return prisma.user.findUnique({ where: { name } });
+  return await prisma.user.findUnique({ where: { name } });
 }
 
-export async function createUser(data: CreateUser) {  
+export async function createUser(data: CreateUserDataObj) {  
   if (!!(await getUserByName(data.name))) {
     throw new AppError('Username is already taken.', 400);
   }
@@ -27,11 +23,11 @@ export async function createUser(data: CreateUser) {
   return user;
 }
 
-export async function updateUser(data: UpdateUser) {
-  const user = prisma.user.update({ where: { id: data.id }, data });
+export async function updateUser(data: UpdateUserDataObj) {
+  const user = await prisma.user.update({ where: { id: data.id }, data });
   return user;
 }
 
-export async function deleteUser({ id }: DeleteUser) {
-  return prisma.user.delete({ where: { id } });
+export async function deleteUser({ id }: DeleteUserDataObj) {
+  return await prisma.user.delete({ where: { id } });
 }
