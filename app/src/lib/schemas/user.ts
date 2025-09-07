@@ -18,7 +18,10 @@ export const UserSchema = z.object({
 });
 
 export const CreateUserSchema = UserSchema.omit({ id: true });
+export type CreateUserDataObj = z.infer<typeof CreateUserSchema>;
 
 export const UpdateUserSchema = UserSchema.omit({ name: true });
+export type UpdateUserDataObj = z.infer<typeof UpdateUserSchema>;
 
 export const DeleteUserSchema = UserSchema.pick({ id: true });
+export type DeleteUserDataObj = z.infer<typeof DeleteUserSchema>;
