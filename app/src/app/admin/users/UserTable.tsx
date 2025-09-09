@@ -1,10 +1,11 @@
 import { useState, useEffect, FormEvent } from "react";
+import UserTableRow from "./UserTableRow";
 
 type User = {
   id: number;
   name: string;
   password: string;
-  role: string;
+  isAdmin: boolean;
 };
 
 type UserTableProps = {
@@ -18,16 +19,6 @@ export default function UserTable({ reloadFlag }: UserTableProps) {
     const res = await fetch('/api/admin/users');
     if (!res.ok) throw new Error(`Error fetching users: ${res.status} ${res.statusText}`);
     setUsers(await res.json());
-  };
-
-  const handleEdit = (e: FormEvent) => { 
-    e.preventDefault();
-    /* Write edit logic here */
-  };
-
-  const handleDelete = (e: FormEvent) => { 
-    e.preventDefault();
-    /* Write delete logic here */
   };
 
   useEffect(() => { loadUsers() }, [reloadFlag]);
@@ -46,25 +37,10 @@ export default function UserTable({ reloadFlag }: UserTableProps) {
         <tbody className="divide-y divide-gray-200 text-gray-700">
         
           {users.map(user => (
-            <tr key={user.id}>
-              <td className="px-6 py-4">{user.name}</td>
-              <td className="px-6 py-4">{user.password}</td>
-              <td className="px-6 py-4">{user.role}</td>
-              <td className="px-6 py-4 flex justify-center space-x-2">
-                <button 
-                  onClick={handleEdit}
-                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={handleDelete}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
+              <UserTableRow 
+                key={user.id} 
+                user={{ ...user }}
+                onDelete={loadUsers} />
           ))}
 
         </tbody>
