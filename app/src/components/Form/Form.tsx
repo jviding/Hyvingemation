@@ -6,13 +6,13 @@ import { Button } from "./Button";
 type FormProps = {
   children: React.ReactNode;
   onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 };
 
 export function Form({ 
   children, 
   onSubmit, 
-  onCancel 
+  onCancel = undefined
 }: FormProps) {
   return (
     <div className="max-w-xl mx-auto">
@@ -28,12 +28,13 @@ export function Form({
             type="submit" 
             color="blue"
           />
-          <Button 
-            label="Cancel"
-            type="button"
-            color="gray"
-            onClick={onCancel}
-          />        
+          {!!onCancel && 
+            <Button 
+              label="Cancel"
+              type="button"
+              color="gray"
+              onClick={onCancel}
+            />}
         </div>
       </form>
     </div>
